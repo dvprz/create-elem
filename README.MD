@@ -1,4 +1,4 @@
-# create-element
+# create-element [![Build Status](https://travis-ci.org/dvprz/create-element.svg?branch=master)](https://travis-ci.org/dvprz/create-element)
 
 Create simple elements in one line of code versus the multi line approach using the native Document API. Influenced by [Pug's](https://pugjs.org/api/getting-started.html) templating syntax.
 
