@@ -1,6 +1,6 @@
 # create-element
 
-Create simple elements in one line of code versus the multi line approch using the native Document API. Influenced by [Pug's](https://pugjs.org/api/getting-started.html) templating syntax.
+Create simple elements in one line of code versus the multi line approach using the native Document API. Influenced by [Pug's](https://pugjs.org/api/getting-started.html) templating syntax.
 
 No more doing:
 ```js
@@ -46,7 +46,7 @@ will result in
 ```
 
 ## Todos
-Currently doesn't handle JSON in a data attribute but it can handle a string like 
+Currently doesn't handle JSON in a data attribute but it can handle a string like:
 ```html
 data-id="1"
 ```
