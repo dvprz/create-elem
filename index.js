@@ -8,7 +8,7 @@ const TYPES = {
 
 const makeToken = (value, type = TYPES.TAG) => ({ value, type })
 
-// const create = (string) => {
+
 module.exports.create = (string) => {
   string = string.trim()
   let left, right, tokens = [], node, end = string.length
@@ -80,7 +80,7 @@ module.exports.create = (string) => {
     if (token.type === 'tag') {
       node = document.createElement(token.value)
     } else if (token.type === TYPES.ATTRIBUTES) {
-      const regex = /([\w-]+)=["|']([\w\s\[{":}\]]+)["|']/g
+      const regex = /([\w-]+)=["|']([\w\s]+)["|']/g
       const stringified = `[${token.value.replace(regex, '{"attribute":"$1","value":"$2"},').slice(0, -1)}]`
       const configurers = JSON.parse(stringified)
 
@@ -92,21 +92,3 @@ module.exports.create = (string) => {
 
   return node
 }
-
-
-// const body = document.querySelector('body')
-// const attributes = {
-//   name: "dave",
-//   type: 'text'
-// }
-
-// const input = create(`input(...attributes)`)
-// console.log(input)
-// const container = create('div(class="foo bar" id="main" data-name="Dave") Hello, world!')
-// body.appendChild(container)
-// body.appendChild(input)
-// console.log(container)
-// console.log()
-
-// todo add support for json in data attributes
-// todo add support for empty attribues
