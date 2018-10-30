@@ -1,0 +1,16 @@
+{
+  "name": "create-element",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter list"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "^13.0.0",
+    "mocha": "^5.2.0"
+  }
+}
