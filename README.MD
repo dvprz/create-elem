@@ -1,4 +1,4 @@
-# create-element [![Build Status](https://travis-ci.org/dvprz/create-element.svg?branch=master)](https://travis-ci.org/dvprz/create-element)
+# create-elem [![Build Status](https://travis-ci.org/dvprz/create-elem.svg?branch=master)](https://travis-ci.org/dvprz/create-elem)
 
 Create simple elements in one line of code versus the multi line approach using the native Document API. Influenced by [Pug's](https://pugjs.org/api/getting-started.html) templating syntax.
 
@@ -19,14 +19,14 @@ const div = create('div(class="foo" id="bar") Hello, world!')
 Via npm:
 
 ```
-npm install create-element
+npm install create-elem
 ```
 
 ## Usage
 Import into your files like:
 
 ```js
-import { create } from 'create-element'
+import { create } from 'create-elem'
 ```
 
 It's pretty straightforward. We consume every character until we encounter a left paren "(" and assume everything before that is the HTML Element you wanted. Then we keep consuming characters until we come across a right paren ")" and assume everything inside is an attribute key and value pair. 
