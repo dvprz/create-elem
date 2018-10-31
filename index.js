@@ -6,7 +6,7 @@ const TYPES = {
   TAG: 'tag'
 }
 
-const REGEX = /([\w-]*)=(([{[]|['"])([\w :,'"]+)([\]}]|['"]))/g
+const REGEX = /([\w-]*)=(([{[]|['"])([-\w :,'"]+)([\]}]|['"]))/g
 
 const makeToken = (value, type = TYPES.TAG) => ({ value, type })
 
