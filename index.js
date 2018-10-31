@@ -45,7 +45,7 @@ module.exports.create = (string) => {
       consume()
       advanceLeft()
 
-      if (char === ' ') {
+      if (peekAhead() === ' ') {
         consume(2)
         advanceLeft()
   
@@ -53,7 +53,7 @@ module.exports.create = (string) => {
           consume()
         }
   
-        tokens.push(makeToken(extract(left, right), TYPES.ATTRIBUTES))
+        tokens.push(makeToken(extract(left, right), TYPES.TEXT))
         advanceLeft()
       }
     } else if (char === ' ') {

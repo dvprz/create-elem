@@ -22,6 +22,13 @@ describe('create-element', function () {
     assert.equal(single.classList.contains(selector), true)
   })
 
+  it('should create a paragraph with one class and some text', function () {
+    const p = create('p(class="container") Milk')
+
+    assert.equal(p.tagName.toLowerCase(), 'p')
+    assert.equal(p.innerText, 'Milk')
+  })
+
   it('should create a div with multiple classes', function () {
     const selectors = ['card', 'flex']
     const multiple = create(`div(class="${selectors.join(' ')}")`)
