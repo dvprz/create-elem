@@ -49,6 +49,13 @@ describe('create-element', function () {
     assert.equal(p.innerText, 'Hello, world!')
   })
 
+  it('should handle JSON data-attributes', function() {
+    const div = create(`div(data-user={"id":1,"name":"John Doe"})`)
+    const user = JSON.parse(div.dataset.user)
+    assert.equal(user.id, 1)
+    assert.equal(user.name, "John Doe")
+  })
+
   afterEach(function() {
     delete global.document
   })

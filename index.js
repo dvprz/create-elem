@@ -6,8 +6,9 @@ const TYPES = {
   TAG: 'tag'
 }
 
-const makeToken = (value, type = TYPES.TAG) => ({ value, type })
+const REGEX = /([\w-]*)=(([{[]|['"])([\w :,'"]+)([\]}]|['"]))/g
 
+const makeToken = (value, type = TYPES.TAG) => ({ value, type })
 
 module.exports.create = (string) => {
   string = string.trim()
@@ -80,11 +81,18 @@ module.exports.create = (string) => {
     if (token.type === 'tag') {
       node = document.createElement(token.value)
     } else if (token.type === TYPES.ATTRIBUTES) {
-      const regex = /([\w-]+)=["|']([\w\s]+)["|']/g
-      const stringified = `[${token.value.replace(regex, '{"attribute":"$1","value":"$2"},').slice(0, -1)}]`
-      const configurers = JSON.parse(stringified)
+      let preprocessed = token.value.replace(REGEX, '{"attribute":"$1", "value":$2},')
+      let stringified = `[${preprocessed.slice(0, -1)}]`
+      const options = JSON.parse(stringified)
+      options.forEach(option => {
+        const { attribute, value } = option
 
-      configurers.forEach(configure => node.setAttribute(configure.attribute, configure.value))
+        if (attribute.includes('data')) {
+          node.setAttribute(attribute, JSON.stringify(value))
+        } else {
+          node.setAttribute(attribute, value)
+        }
+      })
     } else if (token.type === TYPES.TEXT) {
       node.innerText = token.value
     }

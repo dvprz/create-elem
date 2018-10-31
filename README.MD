@@ -31,24 +31,24 @@ import { create } from 'create-elem'
 
 It's pretty straightforward. We consume every character until we encounter a left paren "(" and assume everything before that is the HTML Element you wanted. Then we keep consuming characters until we come across a right paren ")" and assume everything inside is an attribute key and value pair. 
 
-So the following:
-
 ```js
 create('div(class="card flex")')
 create('div(id="hero" class="full-width")')
 create('h1(class="bold") Hello, world!')
 ```
-will result in
+And once the element is appended to an html document:
 ```html
 <div class="card flex"></div>
 <div id="hero" class="full-width"></div>
 <h1 class="bold">Hello, world!</h1>
 ```
 
-## Todos
-Currently doesn't handle JSON in a data attribute but it can handle a string like:
+Can also handle JSON data attributes
+```js
+create('div(data-user={"id":1,"name":"John Doe"})')
+```
 ```html
-data-id="1"
+<div data-user='{"id":1,"name":"John Doe"}'></div>
 ```
 
 ## Test
