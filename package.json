@@ -16,6 +16,10 @@
     "jsdom": "^13.0.0",
     "mocha": "^5.2.0"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/dvprz/create-elem"
+  },
   "keywords": [
     "dom",
     "dom element"
