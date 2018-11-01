@@ -84,10 +84,11 @@ module.exports.create = (string) => {
       let preprocessed = token.value.replace(REGEX, '{"attribute":"$1", "value":$2},')
       let stringified = `[${preprocessed.slice(0, -1)}]`
       const options = JSON.parse(stringified)
+
       options.forEach(option => {
         const { attribute, value } = option
 
-        if (attribute.includes('data')) {
+        if (attribute.includes('data') && typeof value !== 'string') {
           node.setAttribute(attribute, JSON.stringify(value))
         } else {
           node.setAttribute(attribute, value)
