@@ -1,103 +1,94 @@
 'use strict'
 
-const TYPES = {
-  ATTRIBUTES: 'attributes',
-  TEXT: 'text',
-  TAG: 'tag'
-}
+const TOKEN_ATTRIBUTES = 'attributes'
+const TOKEN_TEXT = 'text'
+const TOKEN_TAG = 'tag'
+const WORD_REGEX = /[a-z\-]/i
+const WHITESPACE_REGEX = /\s/
+const ATTRIBUTE_VALUE_REGEX = /([\w-]*)=(([{[]|['"])([-\w :,'"]+)([\]}]|['"]))/g
+const REPLACE_WITH = '{"attribute":"$1", "value":$2},'
+const DATA_KEY = 'data'
 
-const REGEX = /([\w-]*)=(([{[]|['"])([-\w :,'"]+)([\]}]|['"]))/g
+const tokenizer = (string) => {
+  let current = 0
+  let tokens = []
+  let length = string.length
 
-const makeToken = (value, type = TYPES.TAG) => ({ value, type })
+  while (current < length) {
+    let char = string[current]
 
-module.exports.create = (string) => {
-  string = string.trim()
-  let left, right, tokens = [], node, end = string.length
-  left = right = 0
+    if (WORD_REGEX.test(char)) {
+      let capture = ''
 
-  const isDone = () => right > end
+      while (char && WORD_REGEX.test(char)) {
+        capture += char
+        char = string[++current]
+      }
 
-  const peekAhead = () => {
-    let next = right
-    next++
-    return string[next]
-  }
+      tokens.push({ type: TOKEN_TAG, value: capture })
+    }
 
-  const consume = (chars = 1) => chars === 1 ? right++ : right+= chars
+    if (WHITESPACE_REGEX.test(char)) {
+      let capture = ''
 
-  const advanceLeft = () => left = right
+      char = string[++current]
 
-  const extract = (start, end) => string.slice(start, end)  
+      while (char) {
+        capture += char
+        char = string[++current]
+      }
 
-  while (!isDone()) {
-    const char = peekAhead()
+      tokens.push({ type: TOKEN_TEXT, value: capture })      
+    }
 
     if (char === '(') {
-      tokens.push(makeToken(extract(left, right + 1)))
-      consume(2)
-      advanceLeft()
+      let capture = ''
 
-      while (!isDone() && peekAhead() !== ')') {
-        consume()
+      char = string[++current]
+
+      while (char && char !== ')') {
+        capture += char
+        char = string[++current]
       }
 
-      tokens.push(makeToken(extract(left, right + 1), TYPES.ATTRIBUTES))
-      consume()
-      advanceLeft()
-
-      if (peekAhead() === ' ') {
-        consume(2)
-        advanceLeft()
-  
-        while (!isDone()) {
-          consume()
-        }
-  
-        tokens.push(makeToken(extract(left, right), TYPES.TEXT))
-        advanceLeft()
-      }
-    } else if (char === ' ') {
-      tokens.push(makeToken(extract(left, right + 1)))      
-      consume(2)
-      advanceLeft()
-
-      while (!isDone()) {
-        consume()
-      }
-
-      tokens.push(makeToken(extract(left, right), TYPES.TEXT))
-      consume()
-      advanceLeft()
-    } else {
-      consume()
+      tokens.push({ type: TOKEN_ATTRIBUTES, value: capture })
     }
+
+    current++
   }
 
-  if (left === 0) {
-    tokens.push(makeToken(extract(left, right)))
-  }
+  return tokens
+}
+
+const transform = (tokens) => {
+  let node
 
   tokens.forEach(token => {
-    if (token.type === 'tag') {
+    if (token.type === TOKEN_TAG) {
       node = document.createElement(token.value)
-    } else if (token.type === TYPES.ATTRIBUTES) {
-      let preprocessed = token.value.replace(REGEX, '{"attribute":"$1", "value":$2},')
+    } else if (token.type === TOKEN_ATTRIBUTES) {
+      let preprocessed = token.value.replace(ATTRIBUTE_VALUE_REGEX, REPLACE_WITH)
       let stringified = `[${preprocessed.slice(0, -1)}]`
-      const options = JSON.parse(stringified)
+      let options = JSON.parse(stringified)
 
       options.forEach(option => {
-        const { attribute, value } = option
+        let { attribute, value } = option
 
-        if (attribute.includes('data') && typeof value !== 'string') {
+        if (attribute.includes(DATA_KEY) && typeof value !== 'string') {
           node.setAttribute(attribute, JSON.stringify(value))
         } else {
           node.setAttribute(attribute, value)
         }
       })
-    } else if (token.type === TYPES.TEXT) {
+    } else if (token.type === TOKEN_TEXT) {
       node.innerText = token.value
     }
   })
 
   return node
+}
+
+module.exports.create = (string) => {  
+  let tokens = tokenizer(string.trim())
+  return transform(tokens)
 }
