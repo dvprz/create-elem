@@ -1,6 +1,6 @@
 {
   "name": "create-elem",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Create simple elements in one line of code versus the multi line approach using the native Document API. Influenced by Pug's templating syntax.",
   "main": "index.js",
   "scripts": {
