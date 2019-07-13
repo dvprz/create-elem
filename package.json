@@ -4,7 +4,7 @@
   "description": "Create simple elements in one line of code versus the multi line approach using the native Document API. Influenced by Pug's templating syntax.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter list"
+    "test": "jest"
   },
   "author": {
     "name": "Dave Perez",
@@ -13,8 +13,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "jsdom": "^13.0.0",
-    "mocha": "^5.2.0"
+    "jest": "^24.8.0"
   },
   "repository": {
     "type": "git",
