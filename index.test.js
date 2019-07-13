@@ -5,33 +5,33 @@ const { create } = require('./')
 
 describe('create-element', () => {
 
-  it('should create an empty div', () => {
+  test('should create an empty div', () => {
     const div = create('div')
     assert.equal(div.tagName.toLowerCase(), 'div')
   })
 
-  it('should create a div with one class', () => {
+  test('should create a div with one class', () => {
     const selector = 'container'
     const single = create(`div(class="${selector}")`)
 
     assert.equal(single.classList.contains(selector), true)
   })
 
-  it('should create a paragraph with one class and some text', () => {
+  test('should create a paragraph with one class and some text', () => {
     const p = create('p(class="container") Milk')
 
     assert.equal(p.tagName.toLowerCase(), 'p')
     assert.equal(p.innerText, 'Milk')
   })
 
-  it('should create a div with multiple classes', () => {
+  test('should create a div with multiple classes', () => {
     const selectors = ['card', 'flex']
     const multiple = create(`div(class="${selectors.join(' ')}")`)
 
     selectors.forEach(selector => assert.equal(multiple.classList.contains(selector), true))
   })
 
-  it('should create an input with multiple attributes', () => {
+  test('should create an input with multiple attributes', () => {
     const type = "text"    
     const placeholder = "Enter your name"
     const name = "name"
@@ -45,13 +45,13 @@ describe('create-element', () => {
     assert.equal(input.id, id)
   })
 
-  it('should create a paragraph with the text `Hello, world!`', () => {
+  test('should create a paragraph with the text `Hello, world!`', () => {
     const p = create('p Hello, world!')
     assert.equal(p.tagName.toLowerCase(), 'p')
     assert.equal(p.innerText, 'Hello, world!')
   })
 
-  it('should handle JSON data-attributes', () => {
+  test('should handle JSON data-attributes', () => {
     const div = create('div(data-user={"id":1,"name":"John Doe"})')
     const user = JSON.parse(div.dataset.user)
     assert.equal(user.id, 1)
