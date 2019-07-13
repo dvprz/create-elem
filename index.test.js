@@ -6,7 +6,7 @@ describe('create-element', () => {
 
   test('should create an empty div', () => {
     const div = create('div')
-    
+
     expect(div.tagName.toLowerCase()).toBe('div')
   })
 
@@ -32,9 +32,9 @@ describe('create-element', () => {
   })
 
   test('should create an input with multiple attributes', () => {
-    const type = "text"    
-    const placeholder = "Enter your name"
-    const name = "name"
+    const type = 'text'    
+    const placeholder = 'Enter your name'
+    const name = 'name'
     const id = name
     const input = create(`input(type="${type}" placeholder="${placeholder}" name="${name}" id="${id}"`)
 
