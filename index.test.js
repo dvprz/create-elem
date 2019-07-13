@@ -1,14 +1,9 @@
 'use strict'
 
-const jsdom = require('jsdom')
 const assert = require('assert')
 const { create } = require('./')
 
 describe('create-element', function () {
-
-  beforeEach(function() {
-    global.document = new jsdom.JSDOM('<!DOCTYPE html><html><head></head><body></body></html>').window.document
-  })
 
   it('should create an empty div', function () {
     const div = create('div')
@@ -61,10 +56,6 @@ describe('create-element', function () {
     const user = JSON.parse(div.dataset.user)
     assert.equal(user.id, 1)
     assert.equal(user.name, "John Doe")
-  })
-
-  afterEach(function() {
-    delete global.document
   })
 
 })
